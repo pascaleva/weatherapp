@@ -123,7 +123,7 @@
   function DummyGui() {
     var f = function() {};
     this.addGlobals = f;
-    this.noLoop = f;
+    this.noLoop = t;
     this.addObject = f;
     this.show = f;
   }
