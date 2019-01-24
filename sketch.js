@@ -1,3 +1,8 @@
+let myFont;
+function preload() {
+  myFont = loadFont('assets/NotoSans-Bold.ttf');
+}
+
 //Mit echten Werten gefüllt werden diese in der Funktion gotWeather
 let weatherdays=[]; //in dieses Array füllen wir die Wettervorschau der kommenden Tage
 let key='40b22b313dbc476080e92034191101'; // signup https://www.apixu.com/signup.aspx
@@ -9,6 +14,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
   textAlign(CENTER, CENTER);
+  textFont(myFont);
 
   let url = 'https://api.apixu.com/v1/forecast.json?key=40b22b313dbc476080e92034191101&q=Zürich&days=7';
 
@@ -95,22 +101,22 @@ function drawRainCircles(){
     rotate(-90);
 
     //1. from to sind fixe farben
-    let from = color(0,3,19);
-    let to = color(0, 100, 213);
+    let from = color(0, 120, 255);
+    let to = color(0, 39, 83);
 
 
 
     for(let s=0;s<days;s++){
         let rainmm = weatherdays[s].day.totalprecip_mm;
 
-        let step = map(rainmm,0,6,0,1);//leider sind die unterschiede nicht so gross zwischen den tagen.hier temperatur gemapt zwischen -2 und 2 grad für grösseren Effekt
+        let step = map(rainmm,0,10,0,1);//leider sind die unterschiede nicht so gross zwischen den tagen.hier temperatur gemapt zwischen -2 und 2 grad für grösseren Effekt
         let daycolor=lerpColor(from, to, step);
 
         let nextday=s+1;
         if(nextday > days-1) nextday=0;
 
         rainmm = weatherdays[nextday].day.totalprecip_mm;
-        step = map(rainmm,0,6,0,1);
+        step = map(rainmm,0,10,0,1);
         let nextdaycolor=lerpColor(from, to, step);
 
         let anzStufen=Math.floor(360/days); //ergibt stufen pro tag
@@ -145,12 +151,12 @@ function drawDayGradient(){
     let to = color(214, 0, 0);
 
     for(let s=0;s<days;s++){
-        let maxtemp = weatherdays[s].day.maxtemp_c;
+        let maxtemp = weatherdays[s].day.avgtemp_c;
         /*2. mit map wird die tagesfarbe gerechnet
          angenommen -20 grad ist from und 40 grad to, dann wird um den Schnitt zwischen 0 und 1 gerechnet
          */
 
-        let step = map(maxtemp,-10,25,0,1);//hier temperatur gemapt zwischen -10 und 20 grad für grösseren Effekt
+        let step = map(maxtemp,-14,20,0,1);//hier temperatur gemapt zwischen -10 und 20 grad für grösseren Effekt
         let daycolor=lerpColor(from, to, step);
 
         /*
@@ -159,14 +165,13 @@ function drawDayGradient(){
         let nextday=s+1;
         if(nextday > days-1) nextday=0;
 
-        maxtemp = weatherdays[nextday].day.maxtemp_c;
-        step = map(maxtemp,-10,25,0,1);
+        maxtemp = weatherdays[nextday].day.avgtemp_c;
+        step = map(maxtemp,-14,20,0,1);
         let nextdaycolor=lerpColor(from, to, step);
 
         /*
         4. schlaufe um feiner übergänge zu machen
          */
-
         let anzStufen=Math.floor(360/days); //ergibt stufen pro tag
         let inter;
 
@@ -178,7 +183,7 @@ function drawDayGradient(){
             noStroke();
             fill(inter);
             ellipse(200,0,100,100);
-            rotate(1.5);
+            rotate(1);
 
         }
     }  pop();//wir setzen das Koordinatensystem zurück
@@ -197,7 +202,7 @@ function drawMaxWindKm(){
 
     //1. from to sind fixe farben
     let from = color(0);
-    let to = color(50);
+    let to = color(100);
 
 
 
@@ -241,11 +246,12 @@ function drawDate() {
   translate(width/2, height/2);//wir verschieben das Koordinatensystem in die Mitte
   rotate(-90); //wir drehen die Canvas um bei 12:00 mit zeichnen zu beginnen
   noStroke();
-  textSize(10);
+  textSize(18);
   fill(255,180);
 
   for(let s=0;s<days;s++){
-      text(weatherdays[s].date, 300,0);//Datumausgabe
+      textFont(myFont);
+      text(weatherdays[s].date, 340,0);//Datumausgabe
       rotate(angle);//hier brauchen wir unseren ausgerechneten Winkel und drehen nach jedem Zeichnen eins weiter
   }
   pop();//wir setzen das Koordinatensystem zurück
