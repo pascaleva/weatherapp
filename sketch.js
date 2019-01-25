@@ -136,7 +136,7 @@ function drawRainCircles(){
     }pop();//wir setzen das Koordinatensystem zurück
 }
 
-//max temp gradient
+//avg temp gradient
 function drawDayGradient(){
     let days=weatherdays.length;
     let angle=360/days;
@@ -151,12 +151,12 @@ function drawDayGradient(){
     let to = color(214, 0, 0);
 
     for(let s=0;s<days;s++){
-        let maxtemp = weatherdays[s].day.avgtemp_c;
+        let avgtemp = weatherdays[s].day.avgtemp_c;
         /*2. mit map wird die tagesfarbe gerechnet
          angenommen -20 grad ist from und 40 grad to, dann wird um den Schnitt zwischen 0 und 1 gerechnet
          */
 
-        let step = map(maxtemp,-14,20,0,1);//hier temperatur gemapt zwischen -10 und 20 grad für grösseren Effekt
+        let step = map(avgtemp,-14,20,0,1);//hier temperatur gemapt zwischen -10 und 20 grad für grösseren Effekt
         let daycolor=lerpColor(from, to, step);
 
         /*
@@ -165,8 +165,8 @@ function drawDayGradient(){
         let nextday=s+1;
         if(nextday > days-1) nextday=0;
 
-        maxtemp = weatherdays[nextday].day.avgtemp_c;
-        step = map(maxtemp,-14,20,0,1);
+        avgtemp = weatherdays[nextday].day.avgtemp_c;
+        step = map(avgtemp,-14,20,0,1);
         let nextdaycolor=lerpColor(from, to, step);
 
         /*
@@ -202,21 +202,21 @@ function drawMaxWindKm(){
 
     //1. from to sind fixe farben
     let from = color(0);
-    let to = color(100);
+    let to = color(120);
 
 
 
     for(let s=0;s<days;s++){
         let maxwind = weatherdays[s].day.maxwind_kph;
 
-        let step = map(maxwind,0,30,0,1);//leider sind die unterschiede nicht so gross zwischen den tagen.hier temperatur gemapt zwischen -2 und 2 grad für grösseren Effekt
+        let step = map(maxwind,0,40,0,1);//leider sind die unterschiede nicht so gross zwischen den tagen.hier temperatur gemapt zwischen -2 und 2 grad für grösseren Effekt
         let daycolor=lerpColor(from, to, step);
 
         let nextday=s+1;
         if(nextday > days-1) nextday=0;
 
         maxwind = weatherdays[nextday].day.maxwind_kph;
-        step = map(maxwind,0,30,0,1);
+        step = map(maxwind,0,40,0,1);
         let nextdaycolor=lerpColor(from, to, step);
 
         let anzStufen=Math.floor(360/days); //ergibt stufen pro tag
