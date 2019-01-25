@@ -1,3 +1,5 @@
+//open weatherapp in fullscreen mode, otherwhise input field will cover parts of the watch
+
 let myFont;
 function preload() {
   myFont = loadFont('assets/NotoSans-Bold.ttf');
@@ -27,7 +29,8 @@ function setup() {
   button.mousePressed(reloadJson);
 
   loadJSON(url, gotWeather);//nachdem das json File geladen ist, rufen wir die Funktion gotWeather auf
-
+  //noLoop();
+  frameRate(1);
 }
 
 function draw() {
@@ -41,8 +44,6 @@ function draw() {
   drawMinMaxTemperature();
 
   stroke(255,30);
-  //ellipse(width/2, height/2, 500,500);
-  //ellipse(width/2, height/2, 350,350);
   noStroke();
 
 }
@@ -200,7 +201,7 @@ function drawMaxWindKm(){
     translate(width/2, height/2);
     rotate(-90);
 
-    //1. from to sind fixe farben
+    //from to sind fixe farben
     let from = color(0);
     let to = color(120);
 
@@ -209,7 +210,7 @@ function drawMaxWindKm(){
     for(let s=0;s<days;s++){
         let maxwind = weatherdays[s].day.maxwind_kph;
 
-        let step = map(maxwind,0,40,0,1);//leider sind die unterschiede nicht so gross zwischen den tagen.hier temperatur gemapt zwischen -2 und 2 grad für grösseren Effekt
+        let step = map(maxwind,0,40,0,1);
         let daycolor=lerpColor(from, to, step);
 
         let nextday=s+1;
@@ -250,6 +251,7 @@ function drawDate() {
   fill(255,180);
 
   for(let s=0;s<days;s++){
+    
       textFont(myFont);
       text(weatherdays[s].date, 340,0);//Datumausgabe
       rotate(angle);//hier brauchen wir unseren ausgerechneten Winkel und drehen nach jedem Zeichnen eins weiter
